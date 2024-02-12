@@ -1,7 +1,9 @@
 import { useState } from "react";
 import "./App.css";
-import Form from "./components/Form";
+import Form from "./components/Form/Form";
 import { uid } from "uid";
+import List from "./components/List/List";
+import useLocalStorageState from "use-local-storage-state";
 
 function App() {
   const [inputName, setInputName] = useState("");
@@ -10,7 +12,9 @@ function App() {
     name: inputName,
     isForGoodWeather: booleanGoodWeather,
   });
-  const [activities, setActivities] = useState([]);
+  const [activities, setActivities] = useLocalStorageState("activities", {
+    defaultValue: [],
+  });
 
   function handleAddActivity(inputs) {
     setActivities([...activities, { id: uid(), inputs }]);
@@ -44,6 +48,7 @@ function App() {
     <>
       <div className="App">
         <header className="App-header">Add new Activity</header>
+        <List onActivities={activities} />
         <Form
           onAddActivity={handleSubmit}
           onChangeName={handleChangeName}
